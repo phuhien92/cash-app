@@ -1,0 +1,13 @@
+export interface BankAccount {
+    id: string;
+    uuid: string;
+    userId: string;
+    bankName: string;
+    accountNumber: string;
+    routingNumber: string;
+    isDeleted: string;
+    createdAt: Date;
+    modifiedAt: Date;
+}
+
+export type BankAccountPayload = Pick<BankAccount , 'userId' | 'uuid' | 'accountNumber' | 'routingNumber'>
