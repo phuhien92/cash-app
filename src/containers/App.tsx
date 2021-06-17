@@ -3,10 +3,9 @@ import PrivateRoutesContainer from './PrivateRoutesContainer';
 import { makeStyles, CssBaseline, Theme } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useService } from '@xstate/react';
-import { authService } from './../machines/authMachine';
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
-
+import useAuthState from '../states/authState';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex"
@@ -15,11 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const App: React.FC = () => {
   const classes = useStyles();
-  const [authState] = useService(authService);
-  const isLoggedIn = 
-    authState.matches("authorized") ||
-    authState.matches("refreshing") ||
-    authState.matches("updating");
+  const { authState } = useAuthState();
+  const isLoggedIn = authState.isAuthorized;
 
   return (
     <div className={classes.root}>
@@ -27,16 +23,16 @@ const App: React.FC = () => {
       {isLoggedIn && (
         <PrivateRoutesContainer
           isLoggedIn={isLoggedIn}
-          authService={authService}
+          authService={useAuthState}
         />
       )}
-      {authState.matches("unauthorized") && (
+      {!isLoggedIn && (
         <Switch>
           <Route exact path="/signup">
-            <SignUpForm authService={authService}/>
+            <SignUpForm authService={useAuthState}/>
           </Route>
           <Route exact path="/signin">
-            <SignInForm authService={authService}/>
+            <SignInForm authService={useAuthState}/>
           </Route>
           <Route path="/*">
             <Redirect to={{pathname:"/signin"}}/>

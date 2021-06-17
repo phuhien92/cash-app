@@ -10,8 +10,6 @@ const router = express.Router();
 
 passport.use(
     new LocalStrategy(function (username: string, password: string, done: Function) {
-        console.log("Verification function called");
-
         const user = getUserBy('username',username);
         const failureMessage = 'Incorrect username or password.';
         if (!user) {
@@ -37,28 +35,6 @@ passport.deserializeUser(function(id:string, done: Function) {
 
 router.post('/login', 
     passport.authenticate('local')
-    // wrap passport.authenticate call in a middleware function
-    /*
-    function(req,res,next) {
-        passport.authenticate('local', function(error,user,info) {
-            // this will execute in any case
-            console.log('login error:',error);
-            console.log('login user:',user);
-            console.log('login info',info);
-        
-            if (error) {
-                res.status(401).send(error);
-            }
-            // else if (user) {
-            //     res.status(401).send(info);
-            // } else 
-            else {
-                next();
-            }      
-            
-            res.status(401).send(info);
-        })(req,res)
-    }*/
     , (req: Request, res: Response):void => {
 
     if (req.body.remember) {
@@ -66,7 +42,7 @@ router.post('/login',
     } else {
         req.session!.cookie.expires = undefined;
     }
-    console.log(req.user)
+    
     res.send({user: req.user});
 });
 

@@ -12,10 +12,6 @@ import {
     useTheme,
     Button
 } from '@material-ui/core';
-import { useService } from '@xstate/react';
-import { AuthMachineContext, AuthMachineEvents, authService } from '../machines/authMachine';
-import { Interpreter } from 'xstate';
-
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -51,23 +47,19 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 interface Props {
-    toggleDrawer: () => void;
-    closeMobileDrawer: () => void;
     drawerOpen: boolean;
-    authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>
+    authService: any;
 }
 
 const NavDrawer: React.FC<Props> = ({
-    toggleDrawer,
-    closeMobileDrawer,
     drawerOpen,
     authService
 }) => {
     const classes = useStyles();
     const theme   = useTheme();
-    const [authState, sendAuth] = useService(authService);
-    const currentUser = authState?.context?.user;
-    const signOut = () => sendAuth("LOGOUT");
+    const {authState, performLogout} = authService();
+    const currentUser = authState?.user;
+    const signOut = () => performLogout();
     const showTemporaryDrawer = useMediaQuery(theme.breakpoints.only("xs"))
     return (
     <Drawer

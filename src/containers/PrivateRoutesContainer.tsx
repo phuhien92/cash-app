@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import MainLayout from "../components/MainLayout";
 import PrivateRoute from "../components/PrivateRoute";
 import { Switch } from "react-router";
-import { Interpreter } from "xstate";
-import { AuthMachineContext, AuthMachineEvents } from "../machines/authMachine";
 
 export interface Props {
     isLoggedIn: boolean;
-    authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
+    authService: any;
 }
 
 const PrivateRoutesContainer: React.FC<Props> = ({

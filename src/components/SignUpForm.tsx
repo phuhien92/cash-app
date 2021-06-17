@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Interpreter } from 'xstate';
-import { AuthMachineContext, AuthMachineEvents, AuthMachineSchema } from '../machines/authMachine';
 
 export interface Props {
-    authService: Interpreter<AuthMachineContext,AuthMachineSchema, AuthMachineEvents>
+    authService: any;
 };
 
 const SignUpForm: React.FC<Props> = ({authService}) => {

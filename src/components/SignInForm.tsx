@@ -11,23 +11,19 @@ import {
 } from '@material-ui/core';
 import Alert from "@material-ui/lab/Alert";
 import { Theme } from '@material-ui/core/styles';
-import { useService } from '@xstate/react';
 import React from 'react';
-import { Interpreter } from 'xstate';
-import { AuthMachineContext, AuthMachineEvents, AuthMachineSchema } from '../machines/authMachine';
 import { SignInPayload } from '../models';
 import SvgLogo from './SvgLogo';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object } from "yup";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 
 const validationSchema = object({
     username: string().required("Username is required"),
     password: string().required("Password is required").min(4, "Password must contain at least 4 characters")
 })
 export interface Props {
-    authService: Interpreter<AuthMachineContext, AuthMachineSchema, AuthMachineEvents>
+    authService: any;
 }
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
@@ -81,13 +77,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SignInForm: React.FC<Props> = ({authService}) => {
     const classes = useStyles();
     const theme   = useTheme();
-    const [authState, sendAuth] = useService(authService);
+    const {authState, performLogin } = authService();
     const initialValues: SignInPayload = {
         username: "",
         password: "",
         remember: undefined
     };
-    const signInPending = (payload: SignInPayload) => sendAuth({type: "LOGIN", ...payload});
+    const signInPending = (payload: SignInPayload) => performLogin(payload);
 
     return (
         <>
