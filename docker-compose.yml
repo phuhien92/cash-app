@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/cash-app
+    ports:
+      - 8888:8888
+    image: app:phuhien/react
+    container_name: react_container
+    command: npm run start

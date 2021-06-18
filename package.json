@@ -55,10 +55,11 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development concurrently yarn:start:react yarn:start:api:watch",
-    "start:api": "yarn tsnode --files backend/app.ts",
+    "start": "cross-env NODE_ENV=development concurrently npm:start:react npm:start:api:watch",
+    "start:api": "npm run tsnode --files backend/app.ts",
     "start:api:watch": "nodemon --exec yarn tsnode --watch 'backend' backend/app.ts",
     "start:react": "react-scripts start",
-    "db:seed": "yarn tsnode scripts/generateSeedData",
+    "db:seed": "npm run tsnode scripts/generateSeedData",
     "db:seed:dev": "ncp ./data/database-seed.json ./data/database.json",
     "db:seed:empty": "ncp ./data/empty-seed.json ./data/database.json",
     "build": "react-scripts build",

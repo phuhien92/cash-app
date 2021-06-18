@@ -9,13 +9,6 @@ export interface AuthMachineContext {
     message?: string;
 }
 
-export type AuthEvents = 
-| { type: "LOGIN" }
-| { type: "LOGOUT" }
-| { type: "UPDATE" }
-| { type: "REFRESH" }
-| { type: "SIGNUP" };
-
 // @ts-ignore
 const stateDefinition = JSON.parse(localStorage.getItem("authState"));
 const initialStateDefinition = {
